@@ -76,7 +76,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\QuipuStateMachine\IoC.StateMachine.csproj">
+    <ProjectReference Include="..\IoC.StateMachine\IoC.StateMachine.csproj">
       <Project>{7ff5859a-b989-4dbd-9548-8822dc5c221b}</Project>
       <Name>IoC.StateMachine</Name>
     </ProjectReference>
