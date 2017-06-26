@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using IoC.StateMachine.Core.Extension;
+using System.Collections.Generic;
 
 namespace IoC.StateMachine.Core
 {
@@ -37,19 +38,27 @@ namespace IoC.StateMachine.Core
             childContainer.RegisterInstance(typeof(IStateMachine), sm);
             childContainer.RegisterInstance(sm.GetType(), sm);
 
+            Action<IAmContainer, IEnumerable<IActionHolder>> buildUpActions = (c, s) =>
+             {
+                 foreach (var act in s)
+                 {
+                     c.BuildUp(act);
+                     act.NestedAction = c.Get<ISMAction>(act.Code);
+                 }
+             };
+
             childContainer.BuildUp(sm);
             
             foreach (var state in def.States)
             {
                 state.StateMachine = sm;
                 childContainer.BuildUp(state);
-                
+
                 if (state.EnterActions != null)
-                    foreach (var act in state.EnterActions)
-                    {
-                        childContainer.BuildUp(act);
-                        act.NestedAction = childContainer.Get<ISMAction>(act.Code);
-                    }
+                    buildUpActions(childContainer, state.EnterActions);
+
+                if (state.ExitActions != null)
+                    buildUpActions(childContainer, state.ExitActions);
             }
 
             foreach (var tran in def.Transitions)

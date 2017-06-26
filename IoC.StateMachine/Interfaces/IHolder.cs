@@ -22,7 +22,7 @@ namespace IoC.StateMachine.Interfaces
     public interface ITriggerHolder : IHolder<ISMTrigger>
     {
         bool Invoke(ITransition transition, ISMParameters TransitionParameters);
-
+        bool Inverted { get; set; }
     }
 
     public interface IActionHolder : IHolder<ISMAction>

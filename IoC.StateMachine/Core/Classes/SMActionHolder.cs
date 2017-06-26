@@ -66,6 +66,12 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMATriggerHolder : SMActionHolderBase<ISMTrigger>, ITriggerHolder
     {
+        [DataMember]
+        public bool Inverted
+        {
+            get; set;
+        }
+
         ISMParameters IHolderBase.Parameters
         {
             get
@@ -77,8 +83,10 @@ namespace IoC.StateMachine.Core.Classes
         public bool Invoke(ITransition transition,ISMParameters TransitionParameters)
         {
             if (NestedAction != null)
-                return NestedAction.Invoke(transition, Parameters, TransitionParameters);
-
+            {
+                var result = NestedAction.Invoke(transition, Parameters, TransitionParameters);
+                return Inverted ? !result : result;
+            }
             return false;
         }
     }

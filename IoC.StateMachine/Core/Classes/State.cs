@@ -28,5 +28,20 @@ namespace IoC.StateMachine.Core.Classes
 
         [DataMember]
         public bool EndPoint { get; set; }
+
+        private IList<IActionHolder> _exitActions;
+        [DataMember]
+        public IList<IActionHolder> ExitActions
+        {
+            get
+            {
+                _exitActions = _exitActions ?? new List<IActionHolder>();
+                return _exitActions;
+            }
+            set
+            {
+                _exitActions = value;
+            }
+        }
     }
 }

@@ -19,5 +19,6 @@ namespace IoC.StateMachine.Interfaces
     public interface IStateProcessor
     {
         void ProcessState(IState state, ISMParameters parameters);
+        void ExitState(IState state, ISMParameters parameters);
     }
 }

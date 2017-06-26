@@ -79,6 +79,8 @@ namespace IoC.StateMachine.Core
             if (sm.Finished)
                 throw new InvalidOperationException("{0} is finished already! can not push!".FormIt(sm));
 
+            _stateProcessor.ExitState(sm.CurrentState, parameters);
+
             var nextState = GetNextTransition(sm, parameters).TargetStateId;
 
             var state = sm.Definition.GetStateById(nextState);
@@ -137,21 +139,38 @@ namespace IoC.StateMachine.Core
       
     }
 
-    public class StateProcessor :IStateProcessor
+    public class StateProcessor : IStateProcessor
     {
-		IEnumerable<IActionHolder> GetOrdered(IEnumerable<IActionHolder> source)
-		{
-			return source.OrderBy(_ => _.Order);
-		}
+        IEnumerable<IActionHolder> GetOrdered(IEnumerable<IActionHolder> source)
+        {
+            return source.OrderBy(_ => _.Order);
+        }
 
+        private void InvokeActionList(IState state, ISMParameters parameters, IEnumerable<IActionHolder> source)
+        {
+            Affirm.ArgumentNotNull(state, "state");
+
+            if (source != null)
+                foreach (var act in GetOrdered(source))
+                    act.Invoke(parameters);
+
+        }
 
         public void ProcessState(IState state, ISMParameters parameters)
         {
             Affirm.ArgumentNotNull(state, "state");
 
             if (state.EnterActions != null)
-                foreach (var act in GetOrdered(state.EnterActions))
-                    act.Invoke(parameters);
+                InvokeActionList(state, parameters, state.EnterActions);
+
+        }
+
+        public void ExitState(IState state, ISMParameters parameters)
+        {
+            Affirm.ArgumentNotNull(state, "state");
+
+            if (state.ExitActions != null)
+                InvokeActionList(state, parameters, state.ExitActions);
         }
     }
 }

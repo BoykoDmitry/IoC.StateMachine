@@ -24,6 +24,15 @@ namespace IoC.StateMachine.Core.Extension
 
         }
 
+        public static T Setup<T>(this T t, Action<T> action)
+        {
+            Affirm.ArgumentNotNull(action, "action");
+
+            action(t);
+
+            return t;
+        }
+
         public static IState GetOrCreateState(this IStateMachineDefinition def, string id, Action<IState> action = null)
         {
             var state = def.GetStateById(id);
@@ -39,20 +48,30 @@ namespace IoC.StateMachine.Core.Extension
             return state;
         }
 
-        public static IActionHolder Action(this IState def, string code, Action<IActionHolder> action = null)
+        private static IActionHolder GetAction(IList<IActionHolder> source, string code, Action<IActionHolder> action = null)
         {
-            var act = def.EnterActions.FirstOrDefault(_ => _.Code == code);
+            var act = source.FirstOrDefault(_ => _.Code == code);
 
             if (act == null)
             {
                 act = new SMActionHolder() { Code = code };
-                def.EnterActions.Add(act);
+                source.Add(act);
             }
 
             if (action != null)
                 action(act);
 
             return act;
+        }
+
+        public static IActionHolder Action(this IState def, string code, Action<IActionHolder> action = null)
+        {
+            return GetAction(def.EnterActions, code, action);
+        }
+
+        public static IActionHolder ExitAction(this IState def, string code, Action<IActionHolder> action = null)
+        {
+            return GetAction(def.ExitActions, code, action);
         }
 
         public static IActionHolder SetParameter<T>(this IActionHolder act, string key, T value)

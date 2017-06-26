@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC.StateMachine", "IoC.Sta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC.StateMachine.Tests", "IoC.StateMachine.Tests\IoC.StateMachine.Tests.csproj", "{537BB308-4D1D-45D8-ADF5-02F7EFAC27D5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IoC.ExampleApp", "IoC.ExampleApp\IoC.ExampleApp.csproj", "{E1F2A7CC-D2EC-4E24-85E8-F21292994E9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{537BB308-4D1D-45D8-ADF5-02F7EFAC27D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{537BB308-4D1D-45D8-ADF5-02F7EFAC27D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{537BB308-4D1D-45D8-ADF5-02F7EFAC27D5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1F2A7CC-D2EC-4E24-85E8-F21292994E9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1F2A7CC-D2EC-4E24-85E8-F21292994E9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1F2A7CC-D2EC-4E24-85E8-F21292994E9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1F2A7CC-D2EC-4E24-85E8-F21292994E9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
