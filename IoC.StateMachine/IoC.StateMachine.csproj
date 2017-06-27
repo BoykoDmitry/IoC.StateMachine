@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assert.cs" />
+    <Compile Include="Affirm.cs" />
     <Compile Include="Core\Extensions\StateMachineBuilder.cs" />
     <Compile Include="Core\Extensions\StateMachineDefinitionExt.cs" />
     <Compile Include="Interfaces\IAmContainer.cs" />
