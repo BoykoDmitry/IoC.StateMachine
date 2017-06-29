@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Interfaces
 {
+    public interface IRoot { }
+
     /// <summary>
     /// Base class with common properties for state machine definition classes
     /// </summary>
-    public interface ISMBaseElement
+    public interface ISMBaseElement : IRoot
     {
         /// <summary>
         /// Parent state machine

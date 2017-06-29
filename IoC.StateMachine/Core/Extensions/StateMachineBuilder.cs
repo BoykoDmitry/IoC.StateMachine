@@ -38,7 +38,7 @@ namespace IoC.StateMachine.Core.Extension
         /// <summary>
         /// Executes action on instance of <see cref="ISMBaseElement"/>
         /// </summary>
-        public static T Setup<T>(this T t, Action<T> action) where T: ISMBaseElement
+        public static T Setup<T>(this T t, Action<T> action) where T: IRoot
         {
             Affirm.ArgumentNotNull(action, "action");
 

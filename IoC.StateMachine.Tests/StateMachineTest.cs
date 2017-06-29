@@ -37,7 +37,8 @@ namespace IoC.StateMachine.Tests
         public StateMachineTest()
         {
             Definition = new StateMachineDefinition();
-            Definition.GetOrCreateState("state1", _ => _.StartPoint = true)
+            Definition.GetOrCreateState("state1")
+                      .Setup(_ => _.StartPoint = true)                
                       .Action("TestInitAction");
 
             Definition.GetOrCreateState("state2")
@@ -45,8 +46,10 @@ namespace IoC.StateMachine.Tests
 
             Definition.GetOrCreateState("state2_1");
 
-            Definition.GetOrCreateState("state3", _ => _.EndPoint = true)
+            Definition.GetOrCreateState("state3")
+                      .Setup(_ => _.EndPoint = true)
                       .Action("TestAction")
+                      .Setup(_ => _.Order = 0)
                       .SetParameter<string>("int", "10");
 
             Definition.GetOrCreateTran("tran1", "state1", "state2")

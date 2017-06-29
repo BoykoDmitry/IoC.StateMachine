@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Base for holder classes
     /// </summary>
-    public interface IHolderBase
+    public interface IHolderBase : IRoot
     {
         /// <summary>
         /// Parameters for execution

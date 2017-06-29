@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>IoC.StateMachine</id>
-    <version>1.0.4</version>
+    <version>1.0.6</version>
     <authors>Boyko.d</authors>
     <owners>BoykoDmitry</owners>
     <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
@@ -11,7 +11,7 @@
     <description>Base classes for state machine pattern implementation. Supports persistence to XML.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>StateMachine StateMachinePattern</tags>
+    <tags>StateMachine StateMachinePattern IoC</tags>
   </metadata>
   <files>
 	<file src="bin\Release\IoC.StateMachine.dll" target="lib\net45\IoC.StateMachine.dll" />

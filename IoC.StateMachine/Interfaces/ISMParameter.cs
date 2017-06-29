@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Key value pair 
     /// </summary>
-    public interface IParameter<TKey, TValue>
+    public interface IParameter<TKey, TValue> : IRoot
     {
         TKey Key { get; set; }
         TValue Value { get; set; }
