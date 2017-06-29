@@ -109,16 +109,16 @@ namespace IoC.ExampleApp
             def.GetOrCreateState("Done")
                 .Setup(_ => _.EndPoint = true);
 
-            //def.GetOrCreateTran("NewToGuess", "New", "Guess")
-            //    .Trigger("GuessOKTrigger")
-            //    .Setup(_ => _.Inverted = true);
+            def.GetOrCreateTran("NewToGuess", "New", "Guess")
+                .Trigger("GuessOKTrigger")
+                .Setup(_ => _.Inverted = true);
 
             def.GetOrCreateTran("GuessToDone", "Guess", "Done")
                 .Trigger("GuessOKTrigger");
 
-            //def.GetOrCreateTran("GuessToGues1", "Guess", "Guess")
-            //    .Trigger("GuessOKTrigger")
-            //    .Setup(_ => _.Inverted = true);
+            def.GetOrCreateTran("GuessToGues1", "Guess", "Guess")
+                .Trigger("GuessOKTrigger")
+                .Setup(_ => _.Inverted = true);
 
 
             return def;
