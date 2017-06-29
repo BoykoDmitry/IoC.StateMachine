@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace IoC.ExampleApp
 {
+    /// <summary>
+    /// Example application, user should guess randomly generated integer value
+    /// </summary>
     class Program
     {
         private static IUnityContainer _container = new UnityContainer();

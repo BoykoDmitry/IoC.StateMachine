@@ -12,12 +12,12 @@ namespace IoC.StateMachine.Interfaces
     public interface ITransition : ISMBaseElement
     {
         /// <summary>
-        /// State from 
+        /// State to 
         /// </summary>
         string TargetStateId { get; set; }
 
         /// <summary>
-        /// State to 
+        /// State from 
         /// </summary>
         string SourceStateId { get; set; }
 
