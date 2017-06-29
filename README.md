@@ -56,13 +56,58 @@ Sample context
     {
         public GuessContext()
         {
-            Number = -1;
-            Result = GuessResult.NA;
+            Number = -1;          
         }
         [DataMember]
-        public int Number { get; set; }
-        [DataMember]
-        public GuessResult Result { get; set; }
+        public int Number { get; set; }        
     }
 ```
+example of action class which sets number to randomly generated integer
+```c#
+ public class InitContext : ISMAction
+    {
+        private Random rnd = new Random();
+        protected readonly GuessStateMachine _sm;
+        public InitContext(GuessStateMachine sm) 
+        {
+            _sm = sm;        
+        }
 
+        public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
+        {
+            _sm.Context = new GuessContext();
+                        
+            _sm.Context.Number = rnd.Next(10);
+        }
+    }
+
+```
+StateMachine definition 
+
+```c#
+
+var def = new StateMachineDefinition();
+
+def.GetOrCreateState("New")
+   .Setup(_=>_.StartPoint = true)
+   .Action("InitContext")
+   .SetParameter<int>("MaxNumber", 10);
+
+ def.GetOrCreateState("Done")
+    .Setup(_ => _.EndPoint = true);
+
+
+def.GetOrCreateTran("NewToGuess", "New", "Done")
+   .Trigger("GuessOKTrigger")
+   .Setup(_ => _.Inverted = true);
+```
+
+Initiation and pushing 
+
+```c#
+
+var smService = _container.Resolve<ISMService>();
+var sm = smService.Start<GuessStateMachine>(null, def);
+smService.Push(sm, null);
+
+```
