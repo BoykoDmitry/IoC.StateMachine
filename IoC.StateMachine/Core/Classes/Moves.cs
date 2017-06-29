@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace IoC.StateMachine.Core.Classes
 {
+    /// <summary>
+    /// Represents collection of history moves of the state machine instance
+    /// </summary>
     [Serializable]
     [CollectionDataContract]
     public class Moves : List<Move>
@@ -27,6 +30,9 @@ namespace IoC.StateMachine.Core.Classes
         }
     }
 
+    /// <summary>
+    /// Represents one move of the state machine
+    /// </summary>
     [Serializable]
     [DataContract]
     public class Move : IMove

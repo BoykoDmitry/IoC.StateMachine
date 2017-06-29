@@ -9,6 +9,9 @@ using IoC.StateMachine.Core.Extension;
 
 namespace IoC.StateMachine.Core
 {   
+    /// <summary>
+    /// Implementation of <see cref="ISMService"/>
+    /// </summary>
     public class SMService : ISMService
     {
         static readonly ILog Log = LogManager.GetLog(typeof(SMService));

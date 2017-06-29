@@ -8,6 +8,9 @@ using System.Runtime.Serialization;
 
 namespace IoC.StateMachine.Core.Classes
 {
+    /// <summary>
+    /// Represents parameter(key, value) <see cref="ISMParameter"/>
+    /// </summary>
     [Serializable]
     [DataContract]
     public class SMParameter : INotifyPropertyChanged, ISMParameter
@@ -47,6 +50,9 @@ namespace IoC.StateMachine.Core.Classes
         }
     }
 
+    /// <summary>
+    /// Collection of parameters(key, value) <see cref="ISMParameters"/>
+    /// </summary>
     [Serializable]
     [DataContract]
     public class SMParametersCollection : ISMParameters

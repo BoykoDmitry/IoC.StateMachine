@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Core.Extension
 {
+    /// <summary>
+    /// Various helper extensions
+    /// </summary>
     public static class StateMachineDefinitionExt
     {
         public static IState GetStateById(this IStateMachineDefinition def, string id)

@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Interfaces
 {
+    /// <summary>
+    /// Abstract definition of container
+    /// </summary>
     public interface IAmContainer
     {      
         void BuildUp(object target);

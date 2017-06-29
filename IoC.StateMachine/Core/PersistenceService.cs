@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 namespace IoC.StateMachine.Core
 {
+    /// <summary>
+    /// Base class for persistence 
+    /// </summary>
     public abstract class BasePersistenceService : IPersistenceService
     {
         public BasePersistenceService()

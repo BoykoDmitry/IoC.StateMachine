@@ -6,6 +6,9 @@ using System.Runtime.Serialization;
 
 namespace IoC.StateMachine.Core
 {
+    /// <summary>
+    /// Implementation of <see cref="IStateMachineDefinition"/>
+    /// </summary>
     [Serializable]
     [DataContract]
     public sealed class StateMachineDefinition : IStateMachineDefinition

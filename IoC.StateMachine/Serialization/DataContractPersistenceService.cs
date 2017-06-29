@@ -10,9 +10,16 @@ using System.IO;
 
 namespace IoC.StateMachine.Serialization
 {
+    /// <summary>
+    /// Implementation of serialization with usage of <see cref="DataContractSerializer"/>
+    /// </summary>
     public class DataContractPersistenceService : BasePersistenceService
     {
         private readonly AssemblyDataContractResolver _resolver;
+        /// <summary>
+        /// List of assemblies to be considered in serialization
+        /// </summary>
+        /// <param name="assemblyNames"></param>
         public DataContractPersistenceService(IEnumerable<string> assemblyNames)
         {
             _resolver = new AssemblyDataContractResolver(assemblyNames);           

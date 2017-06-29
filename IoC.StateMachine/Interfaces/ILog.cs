@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Interfaces
 {
+    /// <summary>
+    /// Encapsulates logic for logging
+    /// </summary>
     public interface ILog
     {
         void Debug(string format, params object[] args);

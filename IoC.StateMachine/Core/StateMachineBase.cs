@@ -8,6 +8,10 @@ using IoC.StateMachine.Core.Extension;
 
 namespace IoC.StateMachine.Core
 {
+    /// <summary>
+    /// Base class for state machine
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [DataContract]
 	[Serializable]
     public abstract class StateMachineBase<T> : StateMachineDto<T>
@@ -22,8 +26,6 @@ namespace IoC.StateMachine.Core
         public IStateMachineDefinition Definition { get; private set; }
         [XmlIgnore]
         public IState CurrentState { get; set; }
-        [XmlIgnore]
-        public bool WasInit { get; set; }
 
         public void SetDefinition(IStateMachineDefinition definition)
         {
