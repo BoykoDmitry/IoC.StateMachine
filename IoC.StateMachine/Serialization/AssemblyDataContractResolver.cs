@@ -12,17 +12,19 @@ namespace IoC.StateMachine.Serialization
     public class AssemblyDataContractResolver : DataContractResolver
     {
         Dictionary<string, XmlDictionaryString> dictionary = new Dictionary<string, XmlDictionaryString>();
-        Assembly assembly;
+        private readonly IList<Assembly> assemblies;
 
         public AssemblyDataContractResolver NextResolver { get; set; }
 
         public AssemblyDataContractResolver(IEnumerable<string> assemblyNames)
         {
             KnownTypes = new List<Type>();
+            assemblies = new List<Assembly>();
 
             foreach (var assemblyName in assemblyNames)
             {
-                assembly = Assembly.Load(new AssemblyName(assemblyName));
+                var assembly = Assembly.Load(new AssemblyName(assemblyName));
+                assemblies.Add(assembly);
                 foreach (Type type in assembly.GetTypes())
                 {
                     bool knownTypeFound = false;
@@ -68,7 +70,9 @@ namespace IoC.StateMachine.Serialization
             XmlDictionaryString tNamespace;
 
             if (dictionary.TryGetValue(typeName, out tName) && dictionary.TryGetValue(typeNamespace, out tNamespace))
-                return assembly.GetType(tNamespace.Value + "." + tName.Value);
+            {
+                return assemblies.Select(_ => _.GetType(tNamespace.Value + "." + tName.Value)).FirstOrDefault();
+            }
             else
                 return knownTypeResolver.ResolveName(typeName, typeNamespace, declaredType, NextResolver) ?? declaredType;
         }
