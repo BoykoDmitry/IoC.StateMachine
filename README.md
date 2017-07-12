@@ -111,3 +111,17 @@ var sm = smService.Start<GuessStateMachine>(null, def);
 smService.Push(sm, null);
 
 ```
+### Persistence 
+
+Framework ships with embedded persistence service which uses DataContractSerializer for searialization.
+```c#
+    container.RegisterInstance<IPersistenceService>(new DataContractPersistenceService(new string[] { "IoC.StateMachine" }));
+```
+
+usage
+```c#
+    var persistanceService = _container.Resolve<IPersistenceService>();
+    var persistedSM = persistanceService.To(sm);
+    var sm = persistanceService.Load<GuessStateMachine>(persistedSM);
+```
+
