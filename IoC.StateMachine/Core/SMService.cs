@@ -57,7 +57,7 @@ namespace IoC.StateMachine.Core
             if (possibleTransitions == null)
                 throw new InvalidOperationException("{0}: no transitions found {1}".FormIt(sm));
 
-            var token = parameters.FirstOrDefault(x => "token".Equals(x.Key, StringComparison.InvariantCultureIgnoreCase));
+            var token = parameters?.FirstOrDefault(x => "token".Equals(x.Key, StringComparison.InvariantCultureIgnoreCase));
             if (token != null)
                 possibleTransitions = possibleTransitions.Where(
                     x => string.Equals(token.Value.ToString(), x.Trigger.Parameters.GetParameter<string>(token.Key) ?? token.Value.ToString(), 

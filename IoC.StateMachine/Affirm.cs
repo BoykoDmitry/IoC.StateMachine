@@ -13,14 +13,14 @@ namespace IoC.StateMachine
         public static void ArgumentNotNull(object s, string argName)
         {
             if (s == null)
-                Exceptions.ArgNull(argName);
+                throw Exceptions.ArgNull(argName);
         }
 
         [DebuggerHidden]
         public static void IsNotNull(object s, string message)
         {
             if (s == null)
-                Exceptions.CommonException(message);
+                throw Exceptions.CommonException(message);
         }
 
         [DebuggerHidden]
