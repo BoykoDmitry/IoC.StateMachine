@@ -8,7 +8,7 @@ using IoC.StateMachine;
 using IoC.StateMachine.Core.Extension;
 
 namespace IoC.StateMachine.Core
-{   
+{
     /// <summary>
     /// Implementation of <see cref="ISMService"/>
     /// </summary>
@@ -41,7 +41,7 @@ namespace IoC.StateMachine.Core
 
             _stateProcessor.ProcessState(state, parameters);
 
-            sm.SetCurrentState(state);           
+            sm.SetCurrentState(state);
 
             return sm;
         }
@@ -57,6 +57,12 @@ namespace IoC.StateMachine.Core
             if (possibleTransitions == null)
                 throw new InvalidOperationException("{0}: no transitions found {1}".FormIt(sm));
 
+            var token = parameters.FirstOrDefault(x => "token".Equals(x.Key, StringComparison.InvariantCultureIgnoreCase));
+            if (token != null)
+                possibleTransitions = possibleTransitions.Where(
+                    x => string.Equals(token.Value.ToString(), x.Trigger.Parameters.GetParameter<string>(token.Key) ?? token.Value.ToString(), 
+                    StringComparison.InvariantCultureIgnoreCase)).ToList();
+
             var triggers = possibleTransitions.Select(_ => new { trigger = _.Trigger, tran = _ }).ToList();
 
             var theOne = triggers.Where(_ => _.trigger.Invoke(_.tran, parameters)).ToList();
@@ -64,7 +70,7 @@ namespace IoC.StateMachine.Core
             if (!theOne.Any())
                 throw new InvalidOperationException("{0}: no true trigger result found for state {1}".FormIt(sm, sm.CurrentStateId));
 
-            if (theOne.Count()>2)
+            if (theOne.Count() > 2)
                 throw new InvalidOperationException("{0}: too many triggers are true {1}".FormIt(sm, sm.CurrentStateId));
 
             return theOne.First().tran;
@@ -98,23 +104,23 @@ namespace IoC.StateMachine.Core
 
         #region Start
 
-		public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, string key)
-		{
+        public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, string key)
+        {
             Affirm.ArgumentNotNull(key, "key");
-			var sm = IoC.Get<IStateMachine>(key);
-			return Start(def, parameters, sm); 
-		}
+            var sm = IoC.Get<IStateMachine>(key);
+            return Start(def, parameters, sm);
+        }
 
-		public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, Type smType)
-		{
+        public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, Type smType)
+        {
             Affirm.ArgumentNotNull(smType, "smType");
-			var sm = IoC.Get(smType) as IStateMachine;
+            var sm = IoC.Get(smType) as IStateMachine;
             if (sm == null)
                 throw new ArgumentNullException("Given type {0} is not assingable from IStateMachine".FormIt(smType));
-			return Start(def, parameters, sm);
-		}
-		
-		IStateMachine Start(IStateMachineDefinition def, ISMParameters paramters, IStateMachine sm)
+            return Start(def, parameters, sm);
+        }
+
+        IStateMachine Start(IStateMachineDefinition def, ISMParameters paramters, IStateMachine sm)
         {
             Affirm.ArgumentNotNull(def, "definition");
             Affirm.ArgumentNotNull(sm, "machine");
@@ -134,12 +140,12 @@ namespace IoC.StateMachine.Core
             return MoveToState(sm, initialState, paramters);
         }
 
-        public T Start<T>(ISMParameters parameters, IStateMachineDefinition definition) where T : class,IStateMachine
+        public T Start<T>(ISMParameters parameters, IStateMachineDefinition definition) where T : class, IStateMachine
         {
             return Start(definition, parameters, typeof(T)) as T;
         }
         #endregion
-      
+
     }
 
     public class StateProcessor : IStateProcessor
@@ -177,4 +183,3 @@ namespace IoC.StateMachine.Core
         }
     }
 }
-    
