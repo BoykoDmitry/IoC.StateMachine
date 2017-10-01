@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Represents instance of state machine 
     /// </summary>
-    public interface IStateMachine
+    public interface IStateMachine : IDisposable
     {
         /// <summary>
         /// Unique ID of state machine
@@ -63,5 +63,7 @@ namespace IoC.StateMachine.Interfaces
         /// List with state machine moves
         /// </summary>
 		IEnumerable<IMove> StateMoves { get; set; }
+
+        IAmContainer Container { get; set; }
     }
 }

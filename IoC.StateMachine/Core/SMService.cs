@@ -117,7 +117,19 @@ namespace IoC.StateMachine.Core
             var sm = IoC.Get(smType) as IStateMachine;
             if (sm == null)
                 throw new ArgumentNullException("Given type {0} is not assingable from IStateMachine".FormIt(smType));
-            return Start(def, parameters, sm);
+
+            try
+            {
+                Start(def, parameters, sm);
+            }
+            catch
+            {
+                sm?.Dispose();
+
+                throw;
+            }
+
+            return sm;
         }
 
         IStateMachine Start(IStateMachineDefinition def, ISMParameters paramters, IStateMachine sm)

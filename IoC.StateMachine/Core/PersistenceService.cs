@@ -40,6 +40,7 @@ namespace IoC.StateMachine.Core
             var childContainer = IoC.CreateChildContainer();
             childContainer.RegisterInstance(typeof(IStateMachine), sm);
             childContainer.RegisterInstance(sm.GetType(), sm);
+            sm.Container = childContainer;
 
             Action<IAmContainer, IEnumerable<IActionHolder>> buildUpActions = (c, s) =>
              {

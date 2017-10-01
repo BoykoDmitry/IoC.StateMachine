@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Abstract definition of container
     /// </summary>
-    public interface IAmContainer
+    public interface IAmContainer : IDisposable
     {      
         void BuildUp(object target);
         IAmContainer GetChildContainer();

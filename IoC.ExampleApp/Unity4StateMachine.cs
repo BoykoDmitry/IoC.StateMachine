@@ -71,5 +71,42 @@ namespace IoC.ExampleApp
         {
             _container.RegisterInstance(service, instance);
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+        private bool isBeingDissposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isBeingDissposed)
+                return;
+
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_container != null)
+                    {
+                        isBeingDissposed = true;
+                        _container.Dispose();
+                        isBeingDissposed = false;
+                    }
+                }
+
+                disposedValue = true;
+            }
+        }
+
+
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }

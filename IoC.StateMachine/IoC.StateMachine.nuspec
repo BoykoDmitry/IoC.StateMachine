@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>IoC.StateMachine</id>
-    <version>1.0.11</version>
+    <version>1.0.14</version>
     <authors>Boyko.d</authors>
     <owners>BoykoDmitry</owners>
     <licenseUrl>http://opensource.org/licenses/MS-PL</licenseUrl>
