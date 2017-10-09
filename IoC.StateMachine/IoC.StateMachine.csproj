@@ -51,6 +51,8 @@
     <Compile Include="Affirm.cs" />
     <Compile Include="Core\Extensions\StateMachineBuilder.cs" />
     <Compile Include="Core\Extensions\StateMachineDefinitionExt.cs" />
+    <Compile Include="Exceptions\StateMachineException.cs" />
+    <Compile Include="Exceptions\TriggerException.cs" />
     <Compile Include="Interfaces\IAmContainer.cs" />
     <Compile Include="Interfaces\ILog.cs" />
     <Compile Include="IoC.cs" />
@@ -66,7 +68,7 @@
     <Compile Include="Core\StateMachineBase.cs" />
     <Compile Include="Core\StateMachineDefinition.cs" />
     <Compile Include="Core\StateMachineDto.cs" />
-    <Compile Include="Exceptions.cs" />
+    <Compile Include="Exceptions\Exceptions.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Interfaces\IHolder.cs" />
     <Compile Include="Interfaces\IMove.cs" />

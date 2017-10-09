@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using IoC.StateMachine.Interfaces;
 using IoC.StateMachine;
 using IoC.StateMachine.Core.Extension;
+using IoC.StateMachine.Exceptions;
 
 namespace IoC.StateMachine.Core
 {
@@ -68,10 +69,10 @@ namespace IoC.StateMachine.Core
             var theOne = triggers.Where(_ => _.trigger.Invoke(_.tran, parameters)).ToList();
 
             if (!theOne.Any())
-                throw new InvalidOperationException("{0}: no true trigger result found for state {1}".FormIt(sm, sm.CurrentStateId));
+                throw new NoTrueTriggerException(sm.SmId,"{0}: no true trigger result found for state {1}".FormIt(sm, sm.CurrentStateId));
 
-            if (theOne.Count() > 2)
-                throw new InvalidOperationException("{0}: too many triggers are true {1}".FormIt(sm, sm.CurrentStateId));
+            if (theOne.Count() > 1)
+                throw new TooManyTriggersException(theOne.Select(_=>_.trigger).ToList() ,sm.SmId, "{0}: too many triggers are true {1}".FormIt(sm, sm.CurrentStateId));
 
             return theOne.First().tran;
         }

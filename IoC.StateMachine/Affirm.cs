@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using IoC.StateMachine.Exceptions;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace IoC.StateMachine
 {
@@ -13,14 +9,14 @@ namespace IoC.StateMachine
         public static void ArgumentNotNull(object s, string argName)
         {
             if (s == null)
-                throw Exceptions.ArgNull(argName);
+                throw Excp.ArgNull(argName);
         }
 
         [DebuggerHidden]
         public static void IsNotNull(object s, string message)
         {
             if (s == null)
-                throw Exceptions.CommonException(message);
+                throw Excp.CommonException(message);
         }
 
         [DebuggerHidden]
@@ -28,7 +24,7 @@ namespace IoC.StateMachine
         {
             if (string.IsNullOrEmpty(arg))
             {
-                throw Exceptions.ArgNullOrEmpty(argName);
+                throw Excp.ArgNullOrEmpty(argName);
             }
         }
 
@@ -36,7 +32,7 @@ namespace IoC.StateMachine
         {
             if (!condition)
             {
-                throw Exceptions.CommonException(Exceptions.FormatMessage(msgFrmt, args));
+                throw Excp.CommonException(msgFrmt.FormIt(args));
             }
         }
 

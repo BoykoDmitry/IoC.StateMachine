@@ -5,26 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoC.StateMachine
+namespace IoC.StateMachine.Exceptions
 {
-    public static class Exceptions
+    public static class Excp
     {
-        static Exceptions()
-        {
-
-        }
-
-        [DebuggerHidden]
-        public static string FormatMessage(string messageFormat, params object[] args)
-        {
-            if (args != null && args.Length > 0)
-            {
-                messageFormat = string.Format(messageFormat, args);
-            }
-            return messageFormat;
-        }
-
-
         [DebuggerHidden]
         public static ArgumentNullException ArgNull(string argName)
         {
@@ -36,7 +20,7 @@ namespace IoC.StateMachine
         public static ArgumentException ArgNullOrEmpty(string argumentName)
         {
             return new ArgumentException(
-                FormatMessage("String '{0}' should be neither null nor empty", argumentName), argumentName);
+                "String '{0}' should be neither null nor empty".FormIt(argumentName), argumentName);
         }
 
         [DebuggerHidden]
