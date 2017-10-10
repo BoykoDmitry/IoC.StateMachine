@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Exceptions
 {
+    [Serializable]
     public class StateMachineException : Exception
     {
         public StateMachineException()

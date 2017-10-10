@@ -88,6 +88,8 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMATriggerHolder : SMActionHolderBase<ISMTrigger>, ITriggerHolder
     {
+        static readonly ILog Log = LogManager.GetLog(typeof(SMATriggerHolder));
+
         /// <summary>
         /// Defines if result of the trigger must be inverted
         /// </summary>
@@ -114,9 +116,15 @@ namespace IoC.StateMachine.Core.Classes
         {
             if (NestedAction != null)
             {
-                var result = NestedAction.Invoke(transition, Parameters, TransitionParameters);
+                Log.Debug("trigger {0} for tansactions {1} is going to be executed".FormIt(NestedAction.GetType().ToString(), transition.Text));
 
-                return Inverted ? !result : result;
+                var result = NestedAction.Invoke(transition, Parameters, TransitionParameters);
+                
+                var inv = Inverted ? !result : result;
+
+                Log.Debug("Trigger result is {0}".FormIt(inv));
+
+                return inv;
             }
 
             return false;

@@ -61,7 +61,7 @@ namespace IoC.StateMachine.Core
             var token = parameters?.FirstOrDefault(x => "token".Equals(x.Key, StringComparison.InvariantCultureIgnoreCase));
             if (token != null)
                 possibleTransitions = possibleTransitions.Where(
-                    x => string.Equals(token.Value.ToString(), x.Trigger.Parameters.GetParameter<string>(token.Key) ?? token.Value.ToString(), 
+                    x => string.Equals(token.Value?.ToString(), x.Trigger.Parameters?.GetParameter<string>(token.Key) ?? token.Value?.ToString(), 
                     StringComparison.InvariantCultureIgnoreCase)).ToList();
 
             var triggers = possibleTransitions.Select(_ => new { trigger = _.Trigger, tran = _ }).ToList();

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Exceptions
 {
+    [Serializable]
     public class TooManyTriggersException : StateMachineException
     {
         private readonly IList<ITriggerHolder> _triggers;
@@ -36,6 +37,7 @@ namespace IoC.StateMachine.Exceptions
 
     }
 
+    [Serializable]
     public class NoTrueTriggerException : StateMachineException
     {
         public NoTrueTriggerException()
