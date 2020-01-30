@@ -4,6 +4,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using IoC.StateMachine.Core.Extension;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using IoC.StateMachine.Exceptions;
 
 namespace IoC.StateMachine.Core
 {
@@ -12,8 +14,12 @@ namespace IoC.StateMachine.Core
     /// </summary>
     public abstract class BasePersistenceService : IPersistenceService
     {
-        public BasePersistenceService()
+        private readonly IServiceProvider _serviceProvider;
+        public BasePersistenceService(IServiceProvider serviceProvider )
         {
+            Affirm.ArgumentNotNull(serviceProvider, nameof(serviceProvider));
+
+            _serviceProvider = serviceProvider;
         }
 
         public abstract string To<T>(T obj);
@@ -37,42 +43,52 @@ namespace IoC.StateMachine.Core
 
             sm.CurrentState = def.GetStateById(sm.CurrentStateId);
 
-            var childContainer = IoC.CreateChildContainer();
-            childContainer.RegisterInstance(typeof(IStateMachine), sm);
-            childContainer.RegisterInstance(sm.GetType(), sm);
+            var childContainer = _serviceProvider.CreateScope();
+            //childContainer.RegisterInstance(typeof(IStateMachine), sm);
+            //childContainer.RegisterInstance(sm.GetType(), sm);
             sm.Container = childContainer;
 
-            Action<IAmContainer, IEnumerable<IActionHolder>> buildUpActions = (c, s) =>
+            var actionFabric = sm.Container.ServiceProvider.GetRequiredService<IActionFabric>();
+            var triggerFabric = sm.Container.ServiceProvider.GetRequiredService<ITriggerFabric>();
+
+            Action<IEnumerable<IActionHolder>> buildUpActions = (s) =>
              {
                  foreach (var act in s)
                  {
-                     c.BuildUp(act);
-                     act.NestedAction = c.Get<ISMAction>(act.Code);
+                     act.NestedAction = actionFabric.Get(act.Code);
+                     if (act.NestedAction == null)
+                         throw new StateMachineException(sm.SmId, $"Can not resolve {act.Code} from ation fabric");
+                     act.NestedAction.StateMachine = sm;
                  }
              };
 
-            childContainer.BuildUp(sm);
             
             foreach (var state in def.States)
             {
                 state.StateMachine = sm;
-                childContainer.BuildUp(state);
 
                 if (state.EnterActions != null)
-                    buildUpActions(childContainer, state.EnterActions);
+                    buildUpActions(state.EnterActions);
 
                 if (state.ExitActions != null)
-                    buildUpActions(childContainer, state.ExitActions);
+                    buildUpActions(state.ExitActions);
             }
 
             foreach (var tran in def.Transitions)
             {
-                tran.StateMachine = sm;             
-                childContainer.BuildUp(tran);
+                tran.StateMachine = sm;
 
                 if (tran.Trigger != null
                     && !string.IsNullOrEmpty(tran.Trigger.Code))
-                    tran.Trigger.NestedAction = childContainer.Get<ISMTrigger>(tran.Trigger.Code);
+                {
+                    var trigger = triggerFabric.Get(tran.Trigger.Code);
+
+                    if (trigger == null)
+                        throw new StateMachineException(sm.SmId, $"Can not resolve {tran.Trigger.Code} from trigger fabric");
+
+                    trigger.StateMachine = sm;
+                    tran.Trigger.NestedAction = trigger;
+                }
             }
 
             sm.SetDefinition(def);

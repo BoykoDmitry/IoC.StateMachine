@@ -1,39 +1,45 @@
-﻿using IoC.StateMachine.Core;
-using IoC.StateMachine.Core.Classes;
-using IoC.StateMachine.Core.Extension;
-using IoC.StateMachine.Exceptions;
+﻿
+using IoC.StateMachine.Core;
 using IoC.StateMachine.Interfaces;
 using IoC.StateMachine.Serialization;
-using Microsoft.Practices.Unity;
+using Lamar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IoC.StateMachine.Core.Extension;
+using IoC.StateMachine.Core.Classes;
+using IoC.StateMachine.Exceptions;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IoC.StateMachine.Tests
 {
     [TestClass]
     public class ExceptionsTests
-    {
-        IAmContainer _container;
+    {        
+        IServiceProvider _container;
         private StateMachineDefinition Definition;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            var container = new UnityContainer();
-            container.RegisterType<ISMAction, TestAction>("TestAction");
-            container.RegisterType<ISMAction, TestInitAction>("TestInitAction");
-            container.RegisterType<ISMTrigger, TestTrigger>("TestTrigger");
-            container.RegisterType<IStateProcessor, StateProcessor>();
-            container.RegisterInstance<IPersistenceService>(new DataContractPersistenceService(new string[] { "IoC.StateMachine" }));
-            container.RegisterType<ISMService, SMService>();
+            var container = new ServiceRegistry();//
+            container.For<ISMAction>().Use<TestAction>().Named("TestAction").Scoped();
+            container.For<ISMAction>().Use<TestInitAction>().Named("TestInitAction").Scoped();
+            container.For<ISMTrigger>().Use<TestTrigger>().Named("TestTrigger").Scoped();
 
-            _container = new Unity4StateMachine(container);
+            container.For<IStateProcessor>().Use<StateProcessor>();
+            container.For<IPersistenceService>().Use(s => new DataContractPersistenceService(new string[] { "IoC.StateMachine" }, s));
 
-            IoC.SetContainer(_container);
+            container.For<ISMFactory>().Use<SMFactory>().Singleton();
+            container.For<IActionFabric>().Use<ActionFabric>().Singleton();
+            container.For<ITriggerFabric>().Use<TriggerFabric>().Singleton();
+
+            container.For<ISMService>().Use<SMService>();
+
+            _container = new Container(container).ServiceProvider;
         }
 
         public ExceptionsTests()
@@ -66,7 +72,7 @@ namespace IoC.StateMachine.Tests
         [ExpectedException(typeof(TooManyTriggersException))]
         public void TooManyTriggersTest()
         {
-            var service = _container.Get<ISMService>();
+            var service = _container.GetService<ISMService>();
 
             var sm = service.Start<StateMachine4Test>(null, Definition);
 
@@ -80,7 +86,7 @@ namespace IoC.StateMachine.Tests
         [ExpectedException(typeof(NoTrueTriggerException))]
         public void NoTrueTriggerTest()
         {
-            var service = _container.Get<ISMService>();
+            var service = _container.GetService<ISMService>();
 
             var sm = service.Start<StateMachine4Test>(null, Definition);
 

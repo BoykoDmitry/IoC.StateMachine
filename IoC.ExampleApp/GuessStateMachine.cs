@@ -31,20 +31,23 @@ namespace IoC.ExampleApp
         public GuessResult Result { get; set; }
     }
 
-    public abstract class BaseGuessAction
-    {
-        protected readonly GuessStateMachine _sm;
-        public BaseGuessAction(GuessStateMachine sm)
+    public abstract class BaseGuessAction: IHaveStateMachine
+    {        
+        public BaseGuessAction()
         {
-            _sm = sm;
-        }    
+        }
+
+        protected GuessStateMachine _sm;
+        public GuessStateMachine StateMachine { get => _sm; set => _sm = value; }
+        IStateMachine IHaveStateMachine.StateMachine { get => _sm; set => _sm = value as GuessStateMachine; }
     }
 
     public class InitContext : BaseGuessAction, ISMAction
     {
         private Random rnd = new Random();
-        public InitContext(GuessStateMachine sm) : base(sm)
+        public InitContext()
         {
+
         }
 
         public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
@@ -59,8 +62,9 @@ namespace IoC.ExampleApp
 
     public class CheckNumber : BaseGuessAction, ISMAction
     {
-        public CheckNumber(GuessStateMachine sm) : base(sm)
+        public CheckNumber()
         {
+
         }
 
         public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
@@ -81,8 +85,9 @@ namespace IoC.ExampleApp
 
     public class GuessOKTrigger : BaseGuessAction, ISMTrigger
     {
-        public GuessOKTrigger(GuessStateMachine sm) : base(sm)
+        public GuessOKTrigger()
         {
+
         }
 
         public bool Invoke(ITransition transition, ISMParameters Parameters, ISMParameters TransitionParameters)

@@ -1,37 +1,76 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.Practices.Unity;
 using IoC.StateMachine.Interfaces;
 using IoC.StateMachine.Core;
 using IoC.StateMachine.Serialization;
 using IoC.StateMachine.Core.Extension;
 using IoC.StateMachine.Core.Classes;
 using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Lamar;
 
 namespace IoC.StateMachine.Tests
 {
+    public class Factory<T> : IFabric<T>
+    {
+        private readonly IServiceContext _serviceProvider;
+        public Factory(IServiceContext serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+        public T Get(string key)
+        {
+            return _serviceProvider.GetInstance<T>(key);
+        }
+    }
+
+    public class SMFactory : Factory<IStateMachine>, ISMFactory
+    {
+        public SMFactory(IServiceContext serviceProvider) : base(serviceProvider)
+        {
+        }
+    }
+
+    public class ActionFabric : Factory<ISMAction>, IActionFabric
+    {
+        public ActionFabric(IServiceContext serviceProvider) : base(serviceProvider)
+        {
+        }
+    }
+
+    public class TriggerFabric : Factory<ISMTrigger>, ITriggerFabric
+    {
+        public TriggerFabric(IServiceContext serviceProvider) : base(serviceProvider)
+        {
+        }
+    }
+
     [TestClass]
     public class StateMachineTest
     {
-        IAmContainer _container;
+        IServiceProvider _container;
         private StateMachineDefinition Definition;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            var container = new UnityContainer();
+            var container = new ServiceRegistry();
 
-            container.RegisterType<ISMAction, TestAction>("TestAction");
-            container.RegisterType<ISMAction, TestInitAction>("TestInitAction");
-            container.RegisterType<ISMAction, TestActionSetPropTo2>("TestActionSetPropTo2");
-            container.RegisterType<IStateProcessor, StateProcessor>();
-            container.RegisterInstance<IPersistenceService>(new DataContractPersistenceService(new string[] { "IoC.StateMachine" }));
-            container.RegisterType<ISMTrigger, TestTrigger>("TestTrigger");
-            container.RegisterType<ISMService, SMService>();
+            container.For<ISMAction>().Use<TestAction>().Named("TestAction").Scoped();
+            container.For<ISMAction>().Use<TestInitAction>().Named("TestInitAction").Scoped();
+            container.For<ISMTrigger>().Use<TestTrigger>().Named("TestTrigger").Scoped();
+            container.For<ISMAction>().Use<TestActionSetPropTo2>().Named("TestActionSetPropTo2").Scoped();
 
-            _container = new Unity4StateMachine(container);
+            container.For<ISMFactory>().Use<SMFactory>().Singleton();
+            container.For<IActionFabric>().Use<ActionFabric>().Singleton();
+            container.For<ITriggerFabric>().Use<TriggerFabric>().Singleton();
 
-            IoC.SetContainer(_container);
+            container.For<IStateProcessor>().Use<StateProcessor>().Transient();
+            container.For<IPersistenceService>().Use(s => new DataContractPersistenceService(new string[] { "IoC.StateMachine" }, s)).Singleton();
+
+            container.For<ISMService>().Use<SMService>().Singleton();
+
+            _container = new Container(container).ServiceProvider;            
         }
 
         public StateMachineTest()
@@ -76,7 +115,7 @@ namespace IoC.StateMachine.Tests
         [TestMethod]
         public void StartTest()
         {
-            var service = _container.Get<ISMService>();
+            var service = _container.GetService<ISMService>();
 
             var param = new SMParametersCollection();
             param.Add("int", "5");
@@ -107,7 +146,7 @@ namespace IoC.StateMachine.Tests
         [TestMethod]
         public void InitTest()
         {
-            var service = _container.Get<IPersistenceService>();
+            var service = _container.GetService<IPersistenceService>();
 
             var sm = new StateMachine4Test();
 
@@ -122,8 +161,8 @@ namespace IoC.StateMachine.Tests
         [TestMethod]
         public void FromXmlTest()
         {
-            var service = _container.Get<ISMService>();
-            var xmlService = _container.Get<IPersistenceService>();
+            var service = _container.GetService<ISMService>();
+            var xmlService = _container.GetService<IPersistenceService>();
 
             var sm = xmlService.FromSource<StateMachine4Test>(StateMachine4Test.xml4test);
 
@@ -136,8 +175,8 @@ namespace IoC.StateMachine.Tests
         [TestMethod]
         public void ToXmlTest()
         {
-            var service = _container.Get<ISMService>();
-            var xmlService = _container.Get<IPersistenceService>();
+            var service = _container.GetService<ISMService>();
+            var xmlService = _container.GetService<IPersistenceService>();
 
             var sm = new StateMachine4Test();
             sm.SetDefinition(Definition);
@@ -145,9 +184,23 @@ namespace IoC.StateMachine.Tests
         }
 
         [TestMethod]
+        public void SMLoadTest()
+        {
+            var service = _container.GetService<ISMService>();
+            var xmlService = _container.GetService<IPersistenceService>();
+
+            var strDefinition = xmlService.To<StateMachineDefinition>(Definition);
+            var sm = xmlService.Load<StateMachine4Test>(StateMachine4Test.xml4test, strDefinition);
+
+            Assert.IsTrue(sm.Definition.Transitions.All(_ => _.Trigger != null && _.Trigger.NestedAction != null && _.Trigger.NestedAction.StateMachine != null), "something wrong with triggers after deserilization");
+            Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.EnterActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with enter actions after deserilization");
+            Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.ExitActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with exit actions after deserilization");
+        }
+
+        [TestMethod]
         public void DefinitionToXmlTest()
         {
-            var xmlService = _container.Get<IPersistenceService>();
+            var xmlService = _container.GetService<IPersistenceService>();
 
             var defXml = xmlService.To<StateMachineDefinition>(Definition);
 

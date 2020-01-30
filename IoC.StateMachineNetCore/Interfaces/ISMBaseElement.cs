@@ -6,18 +6,24 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Interfaces
 {
-    public interface IRoot { }
+    public interface IRoot 
+    {
 
-    /// <summary>
-    /// Base class with common properties for state machine definition classes
-    /// </summary>
-    public interface ISMBaseElement : IRoot
+    }
+
+    public interface IHaveStateMachine
     {
         /// <summary>
         /// Parent state machine
         /// </summary>
         IStateMachine StateMachine { get; set; }
+    }
 
+    /// <summary>
+    /// Base class with common properties for state machine definition classes
+    /// </summary>
+    public interface ISMBaseElement : IRoot, IHaveStateMachine
+    {
         /// <summary>
         /// id of the element, like transition or state
         /// </summary>

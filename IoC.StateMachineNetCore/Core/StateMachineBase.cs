@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using IoC.StateMachine.Core.Extension;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace IoC.StateMachine.Core
 {
@@ -79,7 +80,7 @@ namespace IoC.StateMachine.Core
 			}
 		}
 
-        public IAmContainer Container { get; set; }
+        public IServiceScope Container { get; set; }
 
         public override string ToString()
         {

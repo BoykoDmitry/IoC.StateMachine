@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Represents trigger for transition
     /// </summary>
-    public interface ISMTrigger
+    public interface ISMTrigger : IHaveStateMachine
     {
         /// <summary>
         /// Invokes trigger 

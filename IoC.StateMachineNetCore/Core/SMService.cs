@@ -19,13 +19,19 @@ namespace IoC.StateMachine.Core
 
         private readonly IStateProcessor _stateProcessor;
         private readonly IPersistenceService _persistenceService;
-        public SMService(IStateProcessor stateProcessor, IPersistenceService persistenceService)
+        private readonly ISMFactory _sMFactory;
+        private readonly IServiceProvider _serviceProvider;
+        public SMService(IStateProcessor stateProcessor, IPersistenceService persistenceService, ISMFactory sMFactory, IServiceProvider serviceProvider)
         {
             Affirm.ArgumentNotNull(stateProcessor, "stateProcessor");
             Affirm.ArgumentNotNull(persistenceService, "persistenceService");
+            Affirm.ArgumentNotNull(sMFactory, "sMFactory");
+            Affirm.ArgumentNotNull(serviceProvider, "serviceProvider");
 
             _stateProcessor = stateProcessor;
             _persistenceService = persistenceService;
+            _sMFactory = sMFactory;
+            _serviceProvider = serviceProvider;
         }
 
         public IList<ITransition> GetTransitions(IStateMachine sm)
@@ -57,12 +63,6 @@ namespace IoC.StateMachine.Core
 
             if (possibleTransitions == null)
                 throw new InvalidOperationException("{0}: no transitions found {1}".FormIt(sm));
-
-            var token = parameters?.FirstOrDefault(x => "token".Equals(x.Key, StringComparison.InvariantCultureIgnoreCase));
-            if (token != null)
-                possibleTransitions = possibleTransitions.Where(
-                    x => string.Equals(token.Value?.ToString(), x.Trigger.Parameters?.GetParameter<string>(token.Key) ?? token.Value?.ToString(), 
-                    StringComparison.InvariantCultureIgnoreCase)).ToList();
 
             var triggers = possibleTransitions.Select(_ => new { trigger = _.Trigger, tran = _ }).ToList();
 
@@ -108,16 +108,16 @@ namespace IoC.StateMachine.Core
         public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, string key)
         {
             Affirm.ArgumentNotNull(key, "key");
-            var sm = IoC.Get<IStateMachine>(key);
+            var sm = _sMFactory.Get(key);
             return Start(def, parameters, sm);
         }
 
         public IStateMachine Start(IStateMachineDefinition def, ISMParameters parameters, Type smType)
         {
             Affirm.ArgumentNotNull(smType, "smType");
-            var sm = IoC.Get(smType) as IStateMachine;
+            var sm = _serviceProvider.GetService(smType) as IStateMachine;
             if (sm == null)
-                throw new ArgumentNullException("Given type {0} is not assingable from IStateMachine".FormIt(smType));
+                throw new ArgumentNullException("Given type {0} is not assingable from IStateMachine or can not be resolved".FormIt(smType));
 
             try
             {

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using IoC.StateMachine.Interfaces;
 using System.Runtime.Serialization;
 using System.IO;
+using System.Xml;
 
 namespace IoC.StateMachine.Serialization
 {
@@ -20,7 +21,7 @@ namespace IoC.StateMachine.Serialization
         /// List of assemblies to be considered in serialization
         /// </summary>
         /// <param name="assemblyNames"></param>
-        public DataContractPersistenceService(IEnumerable<string> assemblyNames)
+        public DataContractPersistenceService(IEnumerable<string> assemblyNames, IServiceProvider serviceProvider) : base(serviceProvider) 
         {
             _resolver = new AssemblyDataContractResolver(assemblyNames);           
         }
@@ -28,7 +29,7 @@ namespace IoC.StateMachine.Serialization
         public static int MaxItemsInObjectGraph = 15000;
         private static DataContractSerializer getSerializer(Type t, AssemblyDataContractResolver res, string root)
         {
-            var x = new DataContractSerializer(t, !string.IsNullOrEmpty(root) ? root : t.Name, "", res.KnownTypes, MaxItemsInObjectGraph, true, true, null, res);
+            var x = new DataContractSerializer(t, !string.IsNullOrEmpty(root) ? root : t.Name, "", res.KnownTypes);
             return x;
         }
 
@@ -36,18 +37,21 @@ namespace IoC.StateMachine.Serialization
         {
             string serializedValue = "";
 
-            using (MemoryStream ms = new MemoryStream())
+            var ms = new MemoryStream();
+            var vr = XmlDictionaryWriter.CreateTextWriter(ms);
+
+            var ser = getSerializer(o.GetType(), res, root);
+            ser.WriteObject(vr, o, res);
+            vr.Flush();
+            ms.Position = 0;
+
+            using (var sr = new StreamReader(ms, Encoding.UTF8))
             {
-                var ser = getSerializer(o.GetType(), res, root);
-
-                ser.WriteObject(ms, o);
-                ms.Position = 0;
-                var sr = new StreamReader(ms, Encoding.UTF8);
                 serializedValue = sr.ReadToEnd();
-
-                sr.Close();
-                ms.Close();
             }
+
+            ms.Close();
+            //vr.Close(); -- hope ms.close will dispose textwritter too.
 
             return serializedValue;
         }
@@ -57,9 +61,10 @@ namespace IoC.StateMachine.Serialization
             if (!string.IsNullOrEmpty(xml))
             {
                 using (MemoryStream xms = new MemoryStream(Encoding.UTF8.GetBytes(xml)))
+                using (var rd = XmlDictionaryReader.CreateTextReader(xms, new XmlDictionaryReaderQuotas()))
                 {
                     var x = getSerializer(type, res ?? _resolver, null);
-                    var s = x.ReadObject(xms);
+                    var s = x.ReadObject(rd, false, res ?? _resolver);
                     return s;
                 }
             }

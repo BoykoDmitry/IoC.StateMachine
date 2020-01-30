@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -64,6 +65,6 @@ namespace IoC.StateMachine.Interfaces
         /// </summary>
 		IEnumerable<IMove> StateMoves { get; set; }
 
-        IAmContainer Container { get; set; }
+        IServiceScope Container { get; set; }
     }
 }

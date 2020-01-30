@@ -1,5 +1,4 @@
-﻿using Microsoft.Practices.Unity;
-using IoC.StateMachine.Core;
+﻿using IoC.StateMachine.Core;
 using IoC.StateMachine.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -9,6 +8,18 @@ using System.Threading.Tasks;
 
 namespace IoC.StateMachine.Tests
 {
+    public abstract class BaseElement<T> : IHaveStateMachine
+        where T: class,IStateMachine
+    {        
+        protected BaseElement()
+        {            
+        }
+
+        private T _stateMachine;
+        public T StateMachine { get => _stateMachine; set => _stateMachine = value; }
+        IStateMachine IHaveStateMachine.StateMachine { get => _stateMachine; set => _stateMachine = value as T; }
+    }
+
     [Serializable]
     public class TestContext : ContextBase
     {
@@ -17,7 +28,7 @@ namespace IoC.StateMachine.Tests
         public int TestPropInt2 { get; set; }
     }
 
-    public class TestTrigger : ISMTrigger
+    public class TestTrigger : BaseElement<StateMachine4Test>,ISMTrigger
     {
         public bool Invoke(ITransition transition, ISMParameters Parameters, ISMParameters TransitionParameters)
         {
@@ -30,10 +41,9 @@ namespace IoC.StateMachine.Tests
         }
     }
 
-    public class TestAction : ISMAction
+    public class TestAction : BaseElement<StateMachine4Test>, ISMAction
     {
-        [Dependency]
-        public StateMachine4Test StateMachine { get; set; }
+
         public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
         {
             object val;
@@ -44,24 +54,17 @@ namespace IoC.StateMachine.Tests
         }
     }
 
-    public class TestActionSetPropTo2 : ISMAction
-    {
-        private StateMachine4Test StateMachine;
-        public TestActionSetPropTo2(StateMachine4Test stateMachine)
-        {
-            StateMachine = stateMachine;
-        }
-        
+    public class TestActionSetPropTo2 : BaseElement<StateMachine4Test>, ISMAction
+    {     
         public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
         {
             StateMachine.Context.TestPropInt2 = 2;
         }
     }
 
-    public class TestInitAction : ISMAction
+    public class TestInitAction :BaseElement<StateMachine4Test>, ISMAction
     {
-        [Dependency]
-        public StateMachine4Test StateMachine { get; set; }
+
         public void Invoke(ISMParameters Parameters, ISMParameters TransitionParameters)
         {
             var context = new TestContext();

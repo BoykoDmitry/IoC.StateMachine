@@ -1,29 +1,15 @@
-﻿//using IoC.StateMachine.Interfaces;
+﻿//using Microsoft.Practices.Unity;
+//using IoC.StateMachine.Interfaces;
 //using System;
 //using System.Collections.Generic;
 //using System.Linq;
 //using System.Text;
 //using System.Threading.Tasks;
-//using IoC.StateMachine;
-//using IoC.StateMachine.Core;
-//using IoC.StateMachine.Serialization;
 
-//namespace IoC.ExampleApp
+//namespace IoC.StateMachine.Tests
 //{
 //    public class Unity4StateMachine : IAmContainer
 //    {
-//        public static void SetUpContainer(IUnityContainer _container)
-//        {
-//            _container.RegisterType<ISMService, SMService>();
-//            _container.RegisterInstance<IPersistenceService>(new DataContractPersistenceService(new List<string>() { "IoC.ExampleApp" }));
-//            _container.RegisterType<IStateProcessor, StateProcessor>();
-//            _container.RegisterType<ISMAction, InitContext>("InitContext");
-//            _container.RegisterType<ISMAction, CheckNumber>("CheckNumber");
-//            _container.RegisterType<ISMTrigger, GuessOKTrigger>("GuessOKTrigger");
-
-//        }
-
-
 //        private readonly IUnityContainer _container;
 //        public Unity4StateMachine(IUnityContainer container)
 //        {

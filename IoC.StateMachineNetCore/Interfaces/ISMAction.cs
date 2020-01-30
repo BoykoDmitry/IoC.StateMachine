@@ -9,7 +9,7 @@ namespace IoC.StateMachine.Interfaces
     /// <summary>
     /// Represents action for state(exit or enter)
     /// </summary>
-    public interface ISMAction
+    public interface ISMAction : IHaveStateMachine
     {
         /// <summary>
         /// Invokes the action
