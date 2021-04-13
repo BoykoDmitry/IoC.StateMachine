@@ -56,19 +56,17 @@ namespace IoC.StateMachine.Tests
         {
             var container = new ServiceRegistry();
 
+            container.AddSMCore(c =>
+            {
+                c.Services.AddSingleton<ISMFactory, SMFactory>()
+                          .AddSingleton<IActionFabric, ActionFabric>()
+                          .AddSingleton<ITriggerFabric, TriggerFabric>();
+            });
+
             container.For<ISMAction>().Use<TestAction>().Named("TestAction").Scoped();
             container.For<ISMAction>().Use<TestInitAction>().Named("TestInitAction").Scoped();
             container.For<ISMTrigger>().Use<TestTrigger>().Named("TestTrigger").Scoped();
             container.For<ISMAction>().Use<TestActionSetPropTo2>().Named("TestActionSetPropTo2").Scoped();
-
-            container.For<ISMFactory>().Use<SMFactory>().Singleton();
-            container.For<IActionFabric>().Use<ActionFabric>().Singleton();
-            container.For<ITriggerFabric>().Use<TriggerFabric>().Singleton();
-
-            container.For<IStateProcessor>().Use<StateProcessor>().Transient();
-            container.For<IPersistenceService>().Use(s => new DataContractPersistenceService(new string[] { "IoC.StateMachine" }, s)).Singleton();
-
-            container.For<ISMService>().Use<SMService>().Singleton();
 
             _container = new Container(container).ServiceProvider;            
         }
