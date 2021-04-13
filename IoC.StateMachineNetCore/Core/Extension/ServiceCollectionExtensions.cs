@@ -28,7 +28,7 @@ namespace IoC.StateMachine.Core.Extension
             var hasPersistanceService = configuration.HasService<IPersistenceService>();
 
             if (!hasPersistanceService)
-                configuration.Services.AddSingleton<IPersistenceService>(s => new DataContractPersistenceService(new string[] { "IoC.StateMachine" }, s));
+                configuration.WithDefaultPersistance();
         }
         private static void CheckFactories(SMConfigurationBuilder configuration)
         {
