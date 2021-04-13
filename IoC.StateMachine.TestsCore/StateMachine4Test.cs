@@ -111,6 +111,41 @@ namespace IoC.StateMachine.Tests
             </StateMachine4Test> 
         ";
         #endregion
-       
+        #region json4test
+        public static string json4test = @"{
+  ""$type"": ""IoC.StateMachine.Tests.StateMachine4Test, IoC.StateMachine.Tests"",
+  ""PreviousStateId"": ""state2"",
+  ""StateHistory"": {
+    ""$type"": ""IoC.StateMachine.Core.Classes.Moves, IoC.StateMachine"",
+    ""$values"": [
+      {
+        ""$type"": ""IoC.StateMachine.Core.Classes.Move, IoC.StateMachine"",
+        ""SourceStateId"": null,
+        ""TargetStateId"": ""state1"",
+        ""Order"": 0
+      },
+      {
+        ""$type"": ""IoC.StateMachine.Core.Classes.Move, IoC.StateMachine"",
+        ""SourceStateId"": ""state1"",
+        ""TargetStateId"": ""state2"",
+        ""Order"": 1
+      },
+      {
+    ""$type"": ""IoC.StateMachine.Core.Classes.Move, IoC.StateMachine"",
+        ""SourceStateId"": ""state2"",
+        ""TargetStateId"": ""state3"",
+        ""Order"": 2
+      }
+    ]
+  },
+  ""SmId"": ""519cdcc1-bdf5-4c5f-a13d-bbeae55ef3a3"",
+  ""Context"": {
+    ""$type"": ""IoC.StateMachine.Tests.TestContext, IoC.StateMachine.Tests"",
+    ""Status"": null
+  },
+  ""CurrentStateId"": ""state3"",
+  ""Finished"": true
+}";
+        #endregion
     }
 }
