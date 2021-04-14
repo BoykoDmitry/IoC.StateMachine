@@ -94,9 +94,11 @@ namespace IoC.StateMachine.Core
             sm.SetDefinition(def);
         }
 
-        public T Load<T>(string xml, string definition) where T : class, IStateMachine
+        public T Load<T>(string xml, IStateMachineDefinition def) where T : class, IStateMachine
         {
-            var def = ObjectFromSource<StateMachineDefinition>(definition);
+            Affirm.NotNullOrEmpty(xml, "xml");
+            Affirm.ArgumentNotNull(def, "def");
+
             var sm = ObjectFromSource<T>(xml);
 
             BuildUpDefinition(sm, def);

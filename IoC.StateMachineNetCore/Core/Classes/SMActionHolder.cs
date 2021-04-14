@@ -116,7 +116,7 @@ namespace IoC.StateMachine.Core.Classes
         {
             if (NestedAction != null)
             {
-                Log.Debug("trigger {0} for tansactions {1} is going to be executed".FormIt(NestedAction.GetType().ToString(), transition.Text));
+                Log.Debug("trigger {0} for transition {1} is going to be executed".FormIt(NestedAction.GetType().ToString(), transition.Text));
 
                 var result = NestedAction.Invoke(transition, Parameters, TransitionParameters);
                 

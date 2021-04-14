@@ -45,9 +45,9 @@ namespace IoC.StateMachine.Interfaces
         /// </summary>
         /// <typeparam name="T">IStateMachine</typeparam>
         /// <param name="xml">serialized instance of <see cref="IStateMachine"/></param>
-        /// <param name="definition">serialized instance of <see cref="IStateMachineDefinition"/></param>
+        /// <param name="def">instance of <see cref="IStateMachineDefinition"/></param>
         /// <returns>Instance of state machine</returns>
-        T Load<T>(string xml, string definition) where T : class, IStateMachine;
+        T Load<T>(string xml, IStateMachineDefinition def) where T : class, IStateMachine;
 
         /// <summary>
         /// Injects dependencies for statae machine definition 
