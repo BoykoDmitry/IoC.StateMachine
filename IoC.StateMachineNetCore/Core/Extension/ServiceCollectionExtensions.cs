@@ -1,5 +1,4 @@
-﻿using IoC.StateMachine.Interfaces;
-using IoC.StateMachine.Abstractions;
+﻿using IoC.StateMachine.Abstractions;
 using IoC.StateMachine.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using System;

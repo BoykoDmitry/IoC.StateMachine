@@ -1,5 +1,4 @@
 ﻿using IoC.StateMachine.Core.Classes;
-using IoC.StateMachine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;

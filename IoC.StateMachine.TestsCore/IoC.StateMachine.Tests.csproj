@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Lamar" Version="5.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.2.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.0.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.0.0" />
@@ -16,7 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\IoC.StateMachine.Abstractions\IoC.StateMachine.Abstractions.csproj" />
-    <ProjectReference Include="..\IoC.StateMachine.Json\IoC.StateMachine.Json.csproj" />
     <ProjectReference Include="..\IoC.StateMachineNetCore\IoC.StateMachine.csproj" />
   </ItemGroup>
 

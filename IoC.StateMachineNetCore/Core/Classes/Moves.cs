@@ -1,5 +1,4 @@
 ﻿using IoC.StateMachine.Abstractions;
-using IoC.StateMachine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

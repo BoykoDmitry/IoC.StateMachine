@@ -30,7 +30,7 @@ namespace IoC.StateMachine
 
         public static void With(bool condition, string msgFrmt, params object[] args)
         {
-            if (!condition)
+            if (condition)
             {
                 throw Excp.CommonException(msgFrmt.FormIt(args));
             }

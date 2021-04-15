@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using IoC.StateMachine.Interfaces;
 using IoC.StateMachine;
 using IoC.StateMachine.Core.Extension;
 using IoC.StateMachine.Exceptions;
 using IoC.StateMachine.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace IoC.StateMachine.Core
 {
@@ -16,23 +16,29 @@ namespace IoC.StateMachine.Core
     /// </summary>
     public class SMService : ISMService
     {
-        static readonly ILog Log = LogManager.GetLog(typeof(SMService));
+        private readonly ILogger _logger;
 
         private readonly IStateProcessor _stateProcessor;
         private readonly IPersistenceService _persistenceService;
         private readonly ISMFactory _sMFactory;
         private readonly IServiceProvider _serviceProvider;
-        public SMService(IStateProcessor stateProcessor, IPersistenceService persistenceService, ISMFactory sMFactory, IServiceProvider serviceProvider)
+        public SMService(IStateProcessor stateProcessor, 
+                         IPersistenceService persistenceService, 
+                         ISMFactory sMFactory, 
+                         IServiceProvider serviceProvider,
+                         ILogger<SMService> logger)
         {
             Affirm.ArgumentNotNull(stateProcessor, "stateProcessor");
             Affirm.ArgumentNotNull(persistenceService, "persistenceService");
             Affirm.ArgumentNotNull(sMFactory, "sMFactory");
             Affirm.ArgumentNotNull(serviceProvider, "serviceProvider");
+            Affirm.ArgumentNotNull(logger, "logger");
 
             _stateProcessor = stateProcessor;
             _persistenceService = persistenceService;
             _sMFactory = sMFactory;
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         public IList<ITransition> GetTransitions(IStateMachine sm)
@@ -45,7 +51,7 @@ namespace IoC.StateMachine.Core
             Affirm.ArgumentNotNull(sm, "sm");
             Affirm.ArgumentNotNull(state, "state");
 
-            Log.Debug("{0} is going to be moved to state {1}".FormIt(sm, state.id));
+            _logger.LogDebug("{0} is going to be moved to state {1}".FormIt(sm, state.id));
 
             _stateProcessor.ProcessState(state, parameters);
 
@@ -85,7 +91,7 @@ namespace IoC.StateMachine.Core
         {
             Affirm.ArgumentNotNull(sm, "sm");
 
-            Log.Debug("{0} going to be pushed".FormIt(sm));
+            _logger.LogDebug("{0} going to be pushed".FormIt(sm));
 
             if (sm.Finished)
                 throw new InvalidOperationException("{0} is finished already! can not push!".FormIt(sm));
@@ -141,7 +147,7 @@ namespace IoC.StateMachine.Core
 
             def.Validate();
 
-            Log.Debug("SM with {0} is going to be started".FormIt(sm.GetType()));
+            _logger.LogDebug("SM with {0} is going to be started".FormIt(sm.GetType()));
 
             sm.SmId = Guid.NewGuid();
             _persistenceService.BuildUpDefinition(sm, def);

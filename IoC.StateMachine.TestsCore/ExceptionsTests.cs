@@ -1,6 +1,5 @@
 ﻿
 using IoC.StateMachine.Core;
-using IoC.StateMachine.Interfaces;
 using IoC.StateMachine.Serialization;
 using Lamar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,19 +25,19 @@ namespace IoC.StateMachine.Tests
         [TestInitialize]
         public void TestInitialize()
         {
-            var container = new ServiceRegistry();//
+            var container = new ServiceRegistry();
+            container.AddLogging();
+            container.AddSMCore(c =>
+            {
+                c.Services.AddSingleton<ISMFactory, SMFactory>()
+                          .AddSingleton<IActionFabric, ActionFabric>()
+                          .AddSingleton<ITriggerFabric, TriggerFabric>();
+            });
+
             container.For<ISMAction>().Use<TestAction>().Named("TestAction").Scoped();
             container.For<ISMAction>().Use<TestInitAction>().Named("TestInitAction").Scoped();
             container.For<ISMTrigger>().Use<TestTrigger>().Named("TestTrigger").Scoped();
 
-            container.For<IStateProcessor>().Use<StateProcessor>();
-            container.For<IPersistenceService>().Use(s => new DataContractPersistenceService(new string[] { "IoC.StateMachine" }, s));
-
-            container.For<ISMFactory>().Use<SMFactory>().Singleton();
-            container.For<IActionFabric>().Use<ActionFabric>().Singleton();
-            container.For<ITriggerFabric>().Use<TriggerFabric>().Singleton();
-
-            container.For<ISMService>().Use<SMService>();
 
             _container = new Container(container).ServiceProvider;
         }

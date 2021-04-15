@@ -4,9 +4,7 @@ using System.Text;
 using Lamar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using IoC.StateMachine.Core.Extension;
-using IoC.StateMachine.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using IoC.StateMachine.Json;
 using IoC.StateMachine.Core;
 using System.Linq;
 using IoC.StateMachine.Abstractions;
@@ -20,7 +18,7 @@ namespace IoC.StateMachine.Tests
         public override void TestInitialize()
         {
             var container = new ServiceRegistry();
-
+            container.AddLogging();
             container.AddSMCore(c =>
             {
                 c.Services.AddSingleton<ISMFactory, SMFactory>()
@@ -34,6 +32,8 @@ namespace IoC.StateMachine.Tests
             container.For<ISMAction>().Use<TestActionSetPropTo2>().Named("TestActionSetPropTo2").Scoped();
 
             _container = new Container(container).ServiceProvider;
+
+            SetUpDefinition(_container);
         }
 
         [TestMethod]

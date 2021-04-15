@@ -3,12 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using IoC.StateMachine.Interfaces;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Xml;
 using IoC.StateMachine.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace IoC.StateMachine.Serialization
 {
@@ -22,7 +21,7 @@ namespace IoC.StateMachine.Serialization
         /// List of assemblies to be considered in serialization
         /// </summary>
         /// <param name="assemblyNames"></param>
-        public DataContractPersistenceService(IEnumerable<string> assemblyNames, IServiceProvider serviceProvider) : base(serviceProvider) 
+        public DataContractPersistenceService(IEnumerable<string> assemblyNames, IServiceProvider serviceProvider, ILogger<DataContractPersistenceService> logger) : base(serviceProvider, logger) 
         {
             _resolver = new AssemblyDataContractResolver(assemblyNames);           
         }

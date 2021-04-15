@@ -1,6 +1,5 @@
 ﻿using IoC.StateMachine.Core.Classes;
 using IoC.StateMachine.Abstractions;
-using IoC.StateMachine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +11,7 @@ namespace IoC.StateMachine.Core.Extension
     /// <summary>
     /// Extensions for state machine definition
     /// </summary>
+    [Obsolete("Please use new generation of the definition builder - StateMachineDefinitionBuilder")]
     public static class StateMachineBuilder
     {
         /// <summary>
@@ -76,7 +76,7 @@ namespace IoC.StateMachine.Core.Extension
 
             if (act == null)
             {
-                act = new SMActionHolder() { Code = code };
+                act = new SMActionHolder(Microsoft.Extensions.Logging.Abstractions.NullLogger<SMActionHolder>.Instance) { Code = code };
                 source.Add(act);
             }
 
@@ -127,7 +127,7 @@ namespace IoC.StateMachine.Core.Extension
         /// <returns></returns>
         public static ITriggerHolder Trigger(this ITransition def, string code, Action<ITriggerHolder> action = null)
         {
-            var act = def.Trigger ?? new SMATriggerHolder() { Code = code };
+            var act = def.Trigger ?? new SMATriggerHolder(Microsoft.Extensions.Logging.Abstractions.NullLogger<SMATriggerHolder>.Instance) { Code = code };
 
             if (action != null)
                 action(act);

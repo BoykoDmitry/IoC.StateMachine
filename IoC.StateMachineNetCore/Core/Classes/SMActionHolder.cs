@@ -1,5 +1,5 @@
 ﻿using IoC.StateMachine.Abstractions;
-using IoC.StateMachine.Interfaces;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
@@ -14,6 +14,13 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public abstract class SMActionHolderBase<T> 
     {
+        protected readonly ILogger _logger;
+        protected SMActionHolderBase(ILogger logger)
+        {
+            Affirm.ArgumentNotNull(logger, nameof(logger));
+
+            _logger = logger;
+        }      
         /// <summary>
         /// Parameters for action 
         /// </summary>
@@ -63,6 +70,10 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMActionHolder : SMActionHolderBase<ISMAction>, IActionHolder
     {
+        public SMActionHolder(ILogger<SMActionHolder> logger) : base(logger)
+        {
+        }
+
         ISMParameters IHolderBase.Parameters
         {
             get
@@ -89,7 +100,9 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMATriggerHolder : SMActionHolderBase<ISMTrigger>, ITriggerHolder
     {
-        static readonly ILog Log = LogManager.GetLog(typeof(SMATriggerHolder));
+        public SMATriggerHolder(ILogger<SMATriggerHolder> logger) : base(logger)
+        {
+        }
 
         /// <summary>
         /// Defines if result of the trigger must be inverted
@@ -117,13 +130,13 @@ namespace IoC.StateMachine.Core.Classes
         {
             if (NestedAction != null)
             {
-                Log.Debug("trigger {0} for transition {1} is going to be executed".FormIt(NestedAction.GetType().ToString(), transition.Text));
+                _logger.LogDebug("trigger {0} for transition {1} is going to be executed".FormIt(NestedAction.GetType().ToString(), transition.Text));
 
                 var result = NestedAction.Invoke(transition, Parameters, TransitionParameters);
                 
                 var inv = Inverted ? !result : result;
 
-                Log.Debug("Trigger result is {0}".FormIt(inv));
+                _logger.LogDebug("Trigger result is {0}".FormIt(inv));
 
                 return inv;
             }

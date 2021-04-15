@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using IoC.StateMachine.Interfaces;
 using IoC.StateMachine.Core;
 using IoC.StateMachine.Serialization;
 using IoC.StateMachine.Core.Extension;
@@ -20,6 +19,8 @@ namespace IoC.StateMachine.Tests
         {
             var container = new ServiceRegistry();
 
+            container.AddLogging();
+
             container.AddSMCore(c =>
             {
                 c.Services.AddSingleton<ISMFactory, SMFactory>()
@@ -33,6 +34,8 @@ namespace IoC.StateMachine.Tests
             container.For<ISMAction>().Use<TestActionSetPropTo2>().Named("TestActionSetPropTo2").Scoped();
 
             _container = new Container(container).ServiceProvider;
+
+            SetUpDefinition(_container);
         }
 
 

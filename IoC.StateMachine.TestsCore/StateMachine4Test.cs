@@ -1,6 +1,5 @@
 ﻿using IoC.StateMachine.Abstractions;
 using IoC.StateMachine.Core;
-using IoC.StateMachine.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;

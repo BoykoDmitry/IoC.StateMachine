@@ -1,5 +1,4 @@
-﻿using IoC.StateMachine.Interfaces;
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using IoC.StateMachine.Core.Extension;
@@ -7,6 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using IoC.StateMachine.Exceptions;
 using IoC.StateMachine.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace IoC.StateMachine.Core
 {
@@ -15,12 +15,15 @@ namespace IoC.StateMachine.Core
     /// </summary>
     public abstract class BasePersistenceService : IPersistenceService
     {
-        private readonly IServiceProvider _serviceProvider;
-        protected BasePersistenceService(IServiceProvider serviceProvider )
+        protected readonly IServiceProvider _serviceProvider;
+        protected readonly ILogger _logger;
+        protected BasePersistenceService(IServiceProvider serviceProvider, ILogger logger )
         {
             Affirm.ArgumentNotNull(serviceProvider, nameof(serviceProvider));
+            Affirm.ArgumentNotNull(logger, nameof(logger));
 
             _serviceProvider = serviceProvider;
+            _logger = logger;
         }
 
         public abstract string To<T>(T obj);
