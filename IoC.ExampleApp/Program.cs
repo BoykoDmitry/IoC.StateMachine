@@ -8,16 +8,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IoC.StateMachine.Core.Extension;
+using IoC.StateMachine.Abstractions;
+using Microsoft.Extensions.Logging;
 
 namespace IoC.ExampleApp
 {
-    //            _container.RegisterType<ISMService, SMService>();
-    //            _container.RegisterInstance<IPersistenceService>(new DataContractPersistenceService(new List<string>() { "IoC.ExampleApp" }));
-    //            _container.RegisterType<IStateProcessor, StateProcessor>();
-    //            _container.RegisterType<ISMAction, InitContext>("InitContext");
-    //            _container.RegisterType<ISMAction, CheckNumber>("CheckNumber");
-    //            _container.RegisterType<ISMTrigger, GuessOKTrigger>("GuessOKTrigger");
-
     /// <summary>
     /// Example application, user should guess randomly generated integer value
     /// </summary>
@@ -29,12 +25,15 @@ namespace IoC.ExampleApp
 
             var serviceCollection = new ServiceCollection();
 
-            serviceCollection.AddSingleton<ISMService, SMService>();
-            serviceCollection.AddSingleton<IPersistenceService>(_ => new DataContractPersistenceService(new List<string>() { "IoC.ExampleApp" }, _));
-            serviceCollection.AddTransient<IStateProcessor, StateProcessor>();
-            serviceCollection.AddSingleton<ISMFactory, SMFactory>();
-            serviceCollection.AddSingleton<IActionFabric, ActionFabric>();
-            serviceCollection.AddSingleton<ITriggerFabric, TriggerFabric>();
+            serviceCollection.AddLogging(_ => _.AddConsole().SetMinimumLevel(LogLevel.Trace));
+
+            serviceCollection.AddSMCore(s =>
+            {
+                s.Services.AddSingleton<ISMFactory, SMFactory>()
+                          .AddSingleton<IActionFabric, ActionFabric>()
+                          .AddSingleton<ITriggerFabric, TriggerFabric>();
+            });             
+
             serviceCollection.AddTransient<IStateMachine, GuessStateMachine>();
             serviceCollection.AddTransient<GuessStateMachine>();
 

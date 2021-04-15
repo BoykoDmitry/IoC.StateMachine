@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using IoC.StateMachine.Core.Extension;
 using System.Runtime.Serialization;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.ExampleApp
 {
