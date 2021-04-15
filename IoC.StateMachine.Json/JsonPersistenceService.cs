@@ -1,5 +1,6 @@
-﻿using IoC.StateMachine.Core;
-using IoC.StateMachine.Interfaces;
+﻿using IoC.StateMachine.Abstractions;
+using IoC.StateMachine.Core;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace IoC.StateMachine.Json
     public class JsonPersistenceService : BasePersistenceService
     {
         private readonly JsonSerializerSettings settings;
-        public JsonPersistenceService(IServiceProvider serviceProvider) : base(serviceProvider)
+        public JsonPersistenceService(IServiceProvider serviceProvider, ILogger<JsonPersistenceService> logger) : base(serviceProvider, logger)
         {
             settings = new JsonSerializerSettings()
             {

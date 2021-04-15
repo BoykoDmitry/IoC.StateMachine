@@ -1,6 +1,7 @@
-﻿using IoC.StateMachine.Interfaces;
+﻿using IoC.StateMachine.Abstractions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using System;
 
 namespace IoC.StateMachine.Json
@@ -14,7 +15,10 @@ namespace IoC.StateMachine.Json
             if (services.HasService<IPersistenceService>())
                 services.RemoveAll<IPersistenceService>();
           
-            services.AddSingleton<IPersistenceService>(s => new JsonPersistenceService(s));
+            services.AddSingleton<IPersistenceService>(s => new JsonPersistenceService(s, 
+                                                                s.GetRequiredService<ILoggerFactory>().CreateLogger<JsonPersistenceService>()
+                                                                )
+            );
 
             return services;
         }

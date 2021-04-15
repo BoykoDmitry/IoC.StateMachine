@@ -70,6 +70,10 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMActionHolder : SMActionHolderBase<ISMAction>, IActionHolder
     {
+        public SMActionHolder() : base(Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance)
+        {
+
+        }
         public SMActionHolder(ILogger<SMActionHolder> logger) : base(logger)
         {
         }
@@ -100,6 +104,10 @@ namespace IoC.StateMachine.Core.Classes
     [DataContract]
     public class SMATriggerHolder : SMActionHolderBase<ISMTrigger>, ITriggerHolder
     {
+        public SMATriggerHolder() : base (Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance)
+        {
+
+        }
         public SMATriggerHolder(ILogger<SMATriggerHolder> logger) : base(logger)
         {
         }
