@@ -6,7 +6,7 @@ namespace IoC.StateMachine.Lamar
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddLamar(
+        public static IServiceCollection AddLamarFactories(
          this IServiceCollection services
         )
         {

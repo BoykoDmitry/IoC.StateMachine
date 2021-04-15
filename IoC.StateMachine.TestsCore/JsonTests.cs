@@ -9,6 +9,7 @@ using IoC.StateMachine.Json;
 using IoC.StateMachine.Core;
 using System.Linq;
 using IoC.StateMachine.Abstractions;
+using IoC.StateMachine.Lamar;
 
 namespace IoC.StateMachine.Tests
 {
@@ -27,9 +28,7 @@ namespace IoC.StateMachine.Tests
             {
                 c.Services.AddJsonPersistance();
 
-                c.Services.AddSingleton<ISMFactory, SMFactory>()
-                          .AddSingleton<IActionFabric, ActionFabric>()
-                          .AddSingleton<ITriggerFabric, TriggerFabric>();
+                c.Services.AddLamarFactories();
             });
 
             container.For<ISMAction>().Use<TestAction>().Named("TestAction").Scoped();

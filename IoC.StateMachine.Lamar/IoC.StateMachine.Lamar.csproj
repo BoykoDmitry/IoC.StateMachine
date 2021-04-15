@@ -3,8 +3,16 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <AssemblyVersion>2.0.0.2</AssemblyVersion>
+    <FileVersion>2.0.0.2</FileVersion>
     <Version>2.0.0.2</Version>
-    <Description>Adapter for lamar</Description>
+    <Authors>BoykoDmitry</Authors>
+    <Company />
+    <Description>IoC.StateMachine Adapter for Lamar</Description>
+    <PackageTags>StateMachine StateMachinePattern IoC</PackageTags>
+    <RepositoryUrl>https://github.com/BoykoDmitry/IoC.StateMachine</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/BoykoDmitry/IoC.StateMachine</PackageProjectUrl>
+    <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>StrongAsmb.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
