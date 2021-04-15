@@ -8,6 +8,7 @@ using IoC.StateMachine.Core.Classes;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Lamar;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Tests
 {

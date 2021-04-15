@@ -6,6 +6,7 @@ using IoC.StateMachine.Core.Extension;
 using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using IoC.StateMachine.Exceptions;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Core
 {
@@ -15,7 +16,7 @@ namespace IoC.StateMachine.Core
     public abstract class BasePersistenceService : IPersistenceService
     {
         private readonly IServiceProvider _serviceProvider;
-        public BasePersistenceService(IServiceProvider serviceProvider )
+        protected BasePersistenceService(IServiceProvider serviceProvider )
         {
             Affirm.ArgumentNotNull(serviceProvider, nameof(serviceProvider));
 

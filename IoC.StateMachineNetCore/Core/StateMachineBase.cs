@@ -6,6 +6,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using IoC.StateMachine.Core.Extension;
 using Microsoft.Extensions.DependencyInjection;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Core
 {

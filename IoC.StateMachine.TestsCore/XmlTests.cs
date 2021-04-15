@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using IoC.StateMachine.Json;
 using IoC.StateMachine.Core;
 using System.Linq;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Tests
 {

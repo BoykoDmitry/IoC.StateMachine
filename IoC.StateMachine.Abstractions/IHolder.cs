@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoC.StateMachine.Interfaces
+namespace IoC.StateMachine.Abstractions
 {
     /// <summary>
     /// Base for holder classes

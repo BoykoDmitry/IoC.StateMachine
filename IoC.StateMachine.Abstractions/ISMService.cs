@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IoC.StateMachine.Interfaces
+namespace IoC.StateMachine.Abstractions
 {
     /// <summary>
     /// Encapsulates logic for starting and moving state machines

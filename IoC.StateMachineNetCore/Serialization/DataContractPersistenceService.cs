@@ -8,6 +8,7 @@ using IoC.StateMachine.Interfaces;
 using System.Runtime.Serialization;
 using System.IO;
 using System.Xml;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Serialization
 {

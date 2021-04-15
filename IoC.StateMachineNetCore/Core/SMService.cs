@@ -7,6 +7,7 @@ using IoC.StateMachine.Interfaces;
 using IoC.StateMachine;
 using IoC.StateMachine.Core.Extension;
 using IoC.StateMachine.Exceptions;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Core
 {

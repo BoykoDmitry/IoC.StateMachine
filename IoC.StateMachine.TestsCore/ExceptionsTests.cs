@@ -13,6 +13,7 @@ using IoC.StateMachine.Core.Extension;
 using IoC.StateMachine.Core.Classes;
 using IoC.StateMachine.Exceptions;
 using Microsoft.Extensions.DependencyInjection;
+using IoC.StateMachine.Abstractions;
 
 namespace IoC.StateMachine.Tests
 {

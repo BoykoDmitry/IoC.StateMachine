@@ -1,4 +1,5 @@
-﻿using IoC.StateMachine.Interfaces;
+﻿using IoC.StateMachine.Abstractions;
+using IoC.StateMachine.Interfaces;
 using System;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;

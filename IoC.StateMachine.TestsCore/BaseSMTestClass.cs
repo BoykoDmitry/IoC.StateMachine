@@ -1,5 +1,5 @@
 ﻿using IoC.StateMachine.Core;
-using IoC.StateMachine.Interfaces;
+using IoC.StateMachine.Abstractions;
 using Lamar;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

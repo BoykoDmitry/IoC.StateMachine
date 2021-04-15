@@ -3,23 +3,21 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <AssemblyVersion>2.0.0.3</AssemblyVersion>
-    <FileVersion>2.0.0.3</FileVersion>
-    <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>StrongAsmb.snk</AssemblyOriginatorKeyFile>
-    <Version>2.0.0.3</Version>
+    <AssemblyVersion>2.0.0.2</AssemblyVersion>
+    <FileVersion>2.0.0.2</FileVersion>
+    <Version>2.0.0.2</Version>
     <Authors>BoykoDmitry</Authors>
     <Company />
-    <Description>Base classes for state machine pattern implementation. Supports persistence to XML.</Description>
+    <Description>Abstractions for state machine implementation</Description>
     <PackageTags>StateMachine StateMachinePattern IoC</PackageTags>
     <RepositoryUrl>https://github.com/BoykoDmitry/IoC.StateMachine</RepositoryUrl>
     <PackageProjectUrl>https://github.com/BoykoDmitry/IoC.StateMachine</PackageProjectUrl>
     <PackageLicenseExpression>MS-PL</PackageLicenseExpression>
-    <!-->PackageReleaseNotes>Refactoring</PackageReleaseNotes-->
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>StrongAsmb.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="IoC.StateMachine.Abstractions" Version="2.0.0.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="5.0.0" />
   </ItemGroup>
 
