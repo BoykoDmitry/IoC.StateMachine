@@ -6,6 +6,7 @@ using System.Xml.Serialization;
 using IoC.StateMachine.Core.Extension;
 using Microsoft.Extensions.DependencyInjection;
 using IoC.StateMachine.Abstractions;
+using System.Text.Json.Serialization;
 
 namespace IoC.StateMachine.Core
 {
@@ -24,8 +25,11 @@ namespace IoC.StateMachine.Core
 		}
 
         [XmlIgnore]   
+        [JsonIgnore]
         public IStateMachineDefinition Definition { get; private set; }
+
         [XmlIgnore]
+        [JsonIgnore]
         public IState CurrentState { get; set; }
 
         public void SetDefinition(IStateMachineDefinition definition)
@@ -68,6 +72,7 @@ namespace IoC.StateMachine.Core
             set { _stateHistory = value; } }
 
 		[XmlIgnore]
+        [JsonIgnore]
         public IEnumerable<IMove> StateMoves 
 		{ 
 			get { return _stateHistory; }
