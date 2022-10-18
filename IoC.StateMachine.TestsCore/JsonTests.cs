@@ -79,5 +79,19 @@ namespace IoC.StateMachine.Tests
             Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.EnterActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with enter actions after deserilization");
             Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.ExitActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with exit actions after deserilization");
         }
+
+        [TestMethod]
+        public void SMLoadTest2()
+        {
+            var service = _container.GetService<ISMService>();
+            var xmlService = _container.GetService<IPersistenceService>();
+
+            var strDefinition = xmlService.To<StateMachineDefinition>(Definition);
+            var sm = xmlService.Load(StateMachine4Test.json4test, xmlService.ObjectFromSource<StateMachineDefinition>(strDefinition), typeof(StateMachine4Test)) as StateMachine4Test;
+
+            Assert.IsTrue(sm.Definition.Transitions.All(_ => _.Trigger != null && _.Trigger.NestedAction != null && _.Trigger.NestedAction.StateMachine != null), "something wrong with triggers after deserilization");
+            Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.EnterActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with enter actions after deserilization");
+            Assert.IsTrue(sm.Definition.States.SelectMany(_ => _.ExitActions).All(_ => _.NestedAction != null && _.NestedAction.StateMachine != null), "something wrong with exit actions after deserilization");
+        }
     }
 }

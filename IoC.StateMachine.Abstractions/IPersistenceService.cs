@@ -50,6 +50,16 @@ namespace IoC.StateMachine.Abstractions
         T Load<T>(string xml, IStateMachineDefinition def) where T : class, IStateMachine;
 
         /// <summary>
+        /// Load state machine from string, builds up loaded instance
+        /// </summary>
+        /// <typeparam name="T">IStateMachine</typeparam>
+        /// <param name="xml">serialized instance of <see cref="IStateMachine"/></param>
+        /// <param name="def">instance of <see cref="IStateMachineDefinition"/></param>
+        /// <param name="t">must implement <see cref="IStateMachine"/></param>
+        /// <returns>Instance of state machine</returns>
+        object Load(string xml, IStateMachineDefinition def, Type t);
+
+        /// <summary>
         /// Injects dependencies for statae machine definition 
         /// resolves actions and triggers 
         /// child container(<see cref="IAmContainer.GetChildContainer"/>) will be created for each instance of state machine

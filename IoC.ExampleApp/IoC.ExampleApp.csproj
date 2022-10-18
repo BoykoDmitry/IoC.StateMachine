@@ -52,8 +52,8 @@
     <Reference Include="IoC.StateMachine, Version=2.0.0.3, Culture=neutral, PublicKeyToken=3e5ac7e506ea369e, processorArchitecture=MSIL">
       <HintPath>..\packages\IoC.StateMachine.2.0.0.3\lib\netstandard2.0\IoC.StateMachine.dll</HintPath>
     </Reference>
-    <Reference Include="IoC.StateMachine.Abstractions, Version=2.0.0.2, Culture=neutral, PublicKeyToken=43385c3f424770fb, processorArchitecture=MSIL">
-      <HintPath>..\packages\IoC.StateMachine.Abstractions.2.0.0.2\lib\netstandard2.0\IoC.StateMachine.Abstractions.dll</HintPath>
+    <Reference Include="IoC.StateMachine.Abstractions, Version=2.0.0.3, Culture=neutral, PublicKeyToken=43385c3f424770fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\IoC.StateMachine.Abstractions.2.0.0.3\lib\netstandard2.0\IoC.StateMachine.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.5.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>

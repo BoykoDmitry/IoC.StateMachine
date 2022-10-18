@@ -109,5 +109,20 @@ namespace IoC.StateMachine.Core
 
             return sm;
         }
+
+        public object Load(string xml, IStateMachineDefinition def, Type t)
+        {
+            Affirm.NotNullOrEmpty(xml, "xml");
+            Affirm.ArgumentNotNull(def, "def");
+
+            var sm = ObjectFromSource(xml, t) as IStateMachine;
+
+            if (sm == null)
+                throw new ArgumentException($"{t} is not IStateMachine!");
+
+            BuildUpDefinition(sm, def);
+
+            return sm;
+        }
     }
 }
