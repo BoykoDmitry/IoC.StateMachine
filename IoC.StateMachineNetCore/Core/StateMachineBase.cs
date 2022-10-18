@@ -85,6 +85,8 @@ namespace IoC.StateMachine.Core
 			}
 		}
 
+        [XmlIgnore]
+        [JsonIgnore]
         public IServiceScope Container { get; set; }
 
         public override string ToString()
